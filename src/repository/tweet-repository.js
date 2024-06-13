@@ -1,6 +1,11 @@
 const Tweet = require('../models/tweet');
+const CrudRepository = require('./crud-repository');
 
-class TweetRepository {
+class TweetRepository extends CrudRepository {
+
+    constructor(){
+        super(Tweet);
+    }
     
     async create(data) {
         try {
@@ -20,15 +25,6 @@ class TweetRepository {
         }
     }
 
-    // async getWithComments(id) {
-    //     try {
-    //         const tweet = await Tweet.findById(id).populate({path: 'comments'}).lean();
-    //         return tweet;
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
     async update(tweetId, data) {
         try {
             const tweet = await Tweet.findByIdAndUpdate(tweetId, data, {new: true});
@@ -38,23 +34,16 @@ class TweetRepository {
         }
     }
 
-    async destroy(id) {
+    async find(id) {
         try {
-            const tweet = await Tweet.findByIdAndRemove(id);
+            const tweet = await Tweet.findById(id).populate({path: 'likes'});
             return tweet;
         } catch (error) {
             console.log(error);
         }
     }
 
-    // async getAll(offset, limit) {
-    //     try {
-    //         const tweet = await Tweet.find().skip(offset).limit(limit);
-    //         return tweet;
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+    
 }
 
 module.exports = TweetRepository;
