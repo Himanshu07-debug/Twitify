@@ -1,8 +1,8 @@
-const {LikeRespository, TweetRepository} = require("../repository/index")
+const {LikeRepository, TweetRepository} = require("../repository/index")
 
 class LikeService {
     constructor() {
-        this.likeRepository = new LikeRespository();
+        this.likeRepository = new LikeRepository();
         this.tweetRepository = new TweetRepository();
     }
 

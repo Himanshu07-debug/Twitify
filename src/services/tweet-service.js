@@ -1,4 +1,5 @@
 const {TweetRepository, HashtagRepository} = require("../repository/index");
+const cloudinary = require('cloudinary').v2;
 
 class TweetService {
 
@@ -10,40 +11,58 @@ class TweetService {
 
     async create(data){
 
-        const content = data.content;
+        try{
 
-        // this regex extracts hashtags from content
-        let tags = content.match(/#[a-zA-Z0-9_]+/g);
+            const content = data.content;
 
-        // removing the first character # from each extracted word
-        tags = tags.map((tag) => tag.substring(1).toLowerCase())
+            // data added in the tweet table
+            const tweet = await this.tweetRepository.create(data);
 
-        console.log("extracted Hashtag", tags);
+            // this regex extracts hashtags from content
+            let tags = content.match(/#[a-zA-Z0-9_]+/g);
 
-        // data added in the tweet table
-        const tweet = await this.tweetRepository.create(data);
+            // if tags is empty, dont do anything
+            if(tags){
+                // removing the first character # from each extracted word
+                tags = tags.map((tag) => tag.substring(1).toLowerCase())
 
-        let alreadyPresentTags = await this.hashtagRepository.findByName(tags);
+                console.log("extracted Hashtag", tags);
 
-        let titleOfPresenttags = alreadyPresentTags.map(tags => tags.title);
+                let alreadyPresentTags = await this.hashtagRepository.findByName(tags);
 
-        let newTags = tags.filter(tag => !titleOfPresenttags.includes(tag));
+                let titleOfPresenttags = alreadyPresentTags.map(tags => tags.title);
 
-        newTags = newTags.map(tag => {
-            return {title: tag, tweets: [tweet.id]}
-        });
+                let newTags = tags.filter(tag => !titleOfPresenttags.includes(tag));
 
-        await this.hashtagRepository.bulkCreate(newTags);
+                newTags = newTags.map(tag => {
+                    return {title: tag, tweets: [tweet.id]}
+                });
 
-        // in the already present ones, adding the twitter id in their tweet_id array
-        alreadyPresentTags.forEach((tag) => {
-            tag.tweets.push(tweet.id);
-            tag.save();
-        });
+                await this.hashtagRepository.bulkCreate(newTags);
 
-        return tweet;
+                // in the already present ones, adding the twitter id in their tweet_id array
+                alreadyPresentTags.forEach((tag) => {
+                    tag.tweets.push(tweet.id);
+                    tag.save();
+                });
+            }
+
+            return tweet;
+
+        }
+        catch(err){
+            console.log("Something went wrong in the service layer")
+            throw error;
+        }
+
 
     }
+
+    async get(tweetId) {
+        const tweet = await this.tweetRepository.getWithComments(tweetId);
+        return tweet;
+    }
+
 
 }
 

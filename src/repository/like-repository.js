@@ -1,7 +1,7 @@
 const Like = require("../models/like")
 const CrudRepository = require("./crud-repository");
 
-class LikeRespository extends CrudRepository {
+class LikeRepository extends CrudRepository {
     constructor() {
         super(Like);
     }
@@ -17,4 +17,4 @@ class LikeRespository extends CrudRepository {
     
 }
 
-module.exports = LikeRespository;
+module.exports = LikeRepository;
