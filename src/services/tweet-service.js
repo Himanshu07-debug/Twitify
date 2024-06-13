@@ -35,7 +35,7 @@ class TweetService {
 
         await this.hashtagRepository.bulkCreate(newTags);
 
-        // in the already present ones, adding the twitter id
+        // in the already present ones, adding the twitter id in their tweet_id array
         alreadyPresentTags.forEach((tag) => {
             tag.tweets.push(tweet.id);
             tag.save();
