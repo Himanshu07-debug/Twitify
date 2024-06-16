@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/tweets", authenticate,  TweetController.createTweet);
 router.get("/tweets/:id", TweetController.getTweet);
 
-router.post("/likes/toggle", LikeController.toggleLike);
+router.post("/likes/toggle", authenticate, LikeController.toggleLike);
 
 router.post("/comments", authenticate, CommentController.createComment);
 
