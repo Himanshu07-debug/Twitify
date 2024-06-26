@@ -166,7 +166,7 @@ Welcome to **Twitify**, a social media application built on a Monolith architect
 Feel free to reach out to me at [himanshusharma2002.2000@gmail.com](mailto:himanshusharma2002.2000@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/himanshu-sharma-dev).
 
 
-Thank you for checking out Elite-Short! If you have any feedback or suggestions, feel free to open an issue or make a pull request.
+Thank you for checking out Twitify! If you have any feedback or suggestions, feel free to open an issue or make a pull request.
 
 Happy coding! 😊
 
